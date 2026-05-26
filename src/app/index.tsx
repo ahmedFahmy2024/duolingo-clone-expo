@@ -1,10 +1,20 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
+import { useAuth } from "@clerk/expo";
 import { colors } from "@/theme";
 
 export default function Index() {
   const router = useRouter();
+  const { isSignedIn, isLoaded, signOut } = useAuth();
+
+  if (!isLoaded) return null;
+  if (!isSignedIn) return <Redirect href="/onboarding" />;
+
+  async function handleSignOut() {
+    await signOut();
+    router.replace("/onboarding");
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
@@ -13,11 +23,25 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <View className="gap-1">
-          <Text className="text--h1">lingua</Text>
-          <Text className="text--body-md" style={{ color: colors.textSecondary }}>
-            Design system loaded ✓
-          </Text>
+        <View className="flex-row items-start justify-between">
+          <View className="gap-1">
+            <Text className="text--h1">lingua</Text>
+            <Text className="text--body-md" style={{ color: colors.textSecondary }}>
+              Design system loaded ✓
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={handleSignOut}
+            activeOpacity={0.7}
+            className="mt-1 px-3 py-1.5 rounded-lg border border-border"
+          >
+            <Text
+              className="text-sm"
+              style={{ fontFamily: "Poppins-Medium", color: colors.textSecondary }}
+            >
+              Log out
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Navigation Links */}

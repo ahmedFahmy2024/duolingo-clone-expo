@@ -1,11 +1,15 @@
 import VerificationModal from "@/components/VerificationModal";
 import { images } from "@/constants/images";
 import { colors } from "@/theme";
+import { useSignIn, useSSO } from "@clerk/expo";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -14,15 +18,77 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+WebBrowser.maybeCompleteAuthSession();
+
 export default function SignInScreen() {
   const router = useRouter();
+  const { signIn, fetchStatus } = useSignIn();
+  const { startSSOFlow } = useSSO();
+
   const [email, setEmail] = useState("");
   const [emailFocused, setEmailFocused] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [verifyError, setVerifyError] = useState("");
 
-  function handleSignIn() {
+  const isLoading = fetchStatus === "fetching";
+
+  useEffect(() => {
+    if (Platform.OS !== "android") return;
+    void WebBrowser.warmUpAsync();
+    return () => { void WebBrowser.coolDownAsync(); };
+  }, []);
+
+  async function handleSignIn() {
     if (!email.trim()) return;
+    setVerifyError("");
+    const { error: createError } = await signIn.create({ identifier: email.trim() });
+    if (createError) {
+      setVerifyError(createError.longMessage ?? createError.message);
+      return;
+    }
+    const { error: sendError } = await signIn.emailCode.sendCode();
+    if (sendError) {
+      setVerifyError(sendError.longMessage ?? sendError.message);
+      return;
+    }
     setModalVisible(true);
+  }
+
+  async function handleVerify(code: string) {
+    setVerifyError("");
+    const { error: verifyError } = await signIn.emailCode.verifyCode({ code });
+    if (verifyError) {
+      setVerifyError(verifyError.longMessage ?? verifyError.message);
+      return;
+    }
+    const { error: finalizeError } = await signIn.finalize();
+    if (finalizeError) {
+      setVerifyError(finalizeError.longMessage ?? finalizeError.message);
+      return;
+    }
+    setModalVisible(false);
+    router.replace("/");
+  }
+
+  async function handleResend() {
+    setVerifyError("");
+    const { error } = await signIn.emailCode.sendCode();
+    if (error) setVerifyError(error.longMessage ?? error.message);
+  }
+
+  async function handleSSO(strategy: "oauth_google" | "oauth_apple") {
+    try {
+      const { createdSessionId, setActive } = await startSSOFlow({
+        strategy,
+        redirectUrl: AuthSession.makeRedirectUri({ scheme: "dulaingo", path: "oauth-callback" }),
+      });
+      if (createdSessionId) {
+        await setActive!({ session: createdSessionId });
+        router.replace("/");
+      }
+    } catch (err: unknown) {
+      setVerifyError(getClerkError(err));
+    }
   }
 
   return (
@@ -92,13 +158,24 @@ export default function SignInScreen() {
           />
         </View>
 
+        {/* Inline error (before modal opens) */}
+        {verifyError && !modalVisible ? (
+          <Text
+            className="text-sm mt-2"
+            style={{ fontFamily: "Poppins-Regular", color: colors.error }}
+          >
+            {verifyError}
+          </Text>
+        ) : null}
+
         {/* Log In button */}
         <TouchableOpacity
           className="btn btn--primary mt-6"
           activeOpacity={0.85}
           onPress={handleSignIn}
+          disabled={isLoading}
         >
-          <Text className="btn__label text-white">Log In</Text>
+          <Text className="btn__label text-white">{isLoading ? "Sending…" : "Log In"}</Text>
         </TouchableOpacity>
 
         {/* Divider */}
@@ -114,9 +191,16 @@ export default function SignInScreen() {
         </View>
 
         {/* Social buttons */}
-        <SocialButton label="Continue with Google" icon={<FontAwesome name="google" size={20} color="#EA4335" />} />
-        <SocialButton label="Continue with Facebook" icon={<FontAwesome name="facebook" size={20} color="#1877F2" />} />
-        <SocialButton label="Continue with Apple" icon={<FontAwesome name="apple" size={20} color={colors.textPrimary} />} />
+        <SocialButton
+          label="Continue with Google"
+          icon={<FontAwesome name="google" size={20} color="#EA4335" />}
+          onPress={() => handleSSO("oauth_google")}
+        />
+        <SocialButton
+          label="Continue with Apple"
+          icon={<FontAwesome name="apple" size={20} color={colors.textPrimary} />}
+          onPress={() => handleSSO("oauth_apple")}
+        />
 
         {/* Footer */}
         <TouchableOpacity
@@ -140,15 +224,27 @@ export default function SignInScreen() {
         visible={modalVisible}
         email={email}
         onClose={() => setModalVisible(false)}
+        onVerify={handleVerify}
+        onResend={handleResend}
+        error={verifyError}
       />
     </SafeAreaView>
   );
 }
 
-function SocialButton({ label, icon }: { label: string; icon: React.ReactNode }) {
+function SocialButton({
+  label,
+  icon,
+  onPress,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  onPress: () => void;
+}) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
+      onPress={onPress}
       className="flex-row items-center border border-border rounded-[14px] py-3.5 px-5 mb-2.5 gap-3.5 bg-white"
     >
       <View className="w-6 items-center">{icon}</View>
@@ -160,4 +256,17 @@ function SocialButton({ label, icon }: { label: string; icon: React.ReactNode })
       </Text>
     </TouchableOpacity>
   );
+}
+
+function getClerkError(err: unknown): string {
+  if (
+    err &&
+    typeof err === "object" &&
+    "errors" in err &&
+    Array.isArray((err as { errors: { longMessage?: string; message: string }[] }).errors)
+  ) {
+    const first = (err as { errors: { longMessage?: string; message: string }[] }).errors[0];
+    return first?.longMessage ?? first?.message ?? "Something went wrong.";
+  }
+  return "Something went wrong.";
 }

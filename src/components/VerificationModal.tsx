@@ -1,8 +1,8 @@
 import { colors } from "@/theme";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -17,22 +17,33 @@ interface Props {
   visible: boolean;
   email: string;
   onClose: () => void;
+  onVerify: (code: string) => Promise<void>;
+  onResend?: () => Promise<void>;
+  error?: string;
 }
 
 const CODE_LENGTH = 6;
 const EMPTY_CODE = Array(CODE_LENGTH).fill("") as string[];
 
-export default function VerificationModal({ visible, email, onClose }: Props) {
-  const router = useRouter();
+export default function VerificationModal({
+  visible,
+  email,
+  onClose,
+  onVerify,
+  onResend,
+  error,
+}: Props) {
   const [code, setCode] = useState<string[]>(EMPTY_CODE);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
   function handleShow() {
     setCode(EMPTY_CODE.slice());
+    setLoading(false);
     setTimeout(() => inputRef.current?.focus(), 100);
   }
 
-  function handleChange(text: string) {
+  async function handleChange(text: string) {
     const digits = text.replace(/\D/g, "").slice(0, CODE_LENGTH).split("");
     const next = Array(CODE_LENGTH)
       .fill("")
@@ -40,9 +51,20 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
     setCode(next);
 
     if (digits.length === CODE_LENGTH) {
-      onClose();
-      router.replace("/");
+      setLoading(true);
+      try {
+        await onVerify(digits.join(""));
+      } finally {
+        setLoading(false);
+      }
     }
+  }
+
+  async function handleResend() {
+    if (!onResend) return;
+    setCode(EMPTY_CODE.slice());
+    await onResend();
+    setTimeout(() => inputRef.current?.focus(), 100);
   }
 
   const filled = code.filter(Boolean).length;
@@ -110,6 +132,7 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
             keyboardType="number-pad"
             maxLength={CODE_LENGTH}
             caretHidden
+            editable={!loading}
             style={styles.hiddenInput}
           />
 
@@ -117,7 +140,7 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => inputRef.current?.focus()}
-            className="flex-row gap-2.5 mb-7"
+            className="flex-row gap-2.5 mb-2"
           >
             {code.map((digit, i) => (
               <View
@@ -129,18 +152,39 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
                   backgroundColor: digit ? colors.background : colors.surface,
                 }}
               >
-                <Text
-                  className="text-[22px]"
-                  style={{ fontFamily: "Poppins-SemiBold", color: colors.textPrimary }}
-                >
-                  {digit}
-                </Text>
+                {loading && i === CODE_LENGTH - 1 ? (
+                  <ActivityIndicator size="small" color={colors.linguaPurple} />
+                ) : (
+                  <Text
+                    className="text-[22px]"
+                    style={{ fontFamily: "Poppins-SemiBold", color: colors.textPrimary }}
+                  >
+                    {digit}
+                  </Text>
+                )}
               </View>
             ))}
           </TouchableOpacity>
 
+          {/* Error message */}
+          {error ? (
+            <Text
+              className="text-sm text-center mb-5"
+              style={{ fontFamily: "Poppins-Regular", color: colors.error }}
+            >
+              {error}
+            </Text>
+          ) : (
+            <View className="mb-5" />
+          )}
+
           {/* Resend row */}
-          <View className="flex-row items-center gap-1.5">
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={handleResend}
+            disabled={!onResend}
+            className="flex-row items-center gap-1.5"
+          >
             <Ionicons name="refresh-outline" size={15} color={colors.textSecondary} />
             <Text
               className="text-sm"
@@ -151,7 +195,7 @@ export default function VerificationModal({ visible, email, onClose }: Props) {
                 Resend code
               </Text>
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </Modal>
