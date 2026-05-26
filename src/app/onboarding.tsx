@@ -34,14 +34,14 @@ export default function OnboardingScreen() {
       {/* Mascot Illustration with Speech Bubbles */}
       <View className="flex-1 items-center justify-center mt-4 relative">
         {/* Hello bubble — left */}
-        <View className="absolute left-5 top-[15%] bg-white rounded-[20px] px-4 py-2 z-10" style={styles.bubble}>
+        <View className="absolute left-5 top-[15%] bg-white rounded-xl px-4 py-2 z-10" style={styles.bubble}>
           <Text style={{ fontFamily: "Poppins-SemiBold", color: colors.textPrimary }} className="text-sm font-semibold">
             Hello!
           </Text>
         </View>
 
         {/* ¡Hola! bubble — top right */}
-        <View className="absolute right-5 top-[5%] bg-white rounded-[20px] px-4 py-2 z-10" style={styles.bubble}>
+        <View className="absolute right-5 top-[5%] bg-white rounded-xl px-4 py-2 z-10" style={styles.bubble}>
           <Text style={{ fontFamily: "Poppins-SemiBold", color: colors.textPrimary }} className="text-sm font-semibold">
             ¡Hola!
           </Text>
@@ -54,7 +54,7 @@ export default function OnboardingScreen() {
         />
 
         {/* 你好! bubble — bottom right */}
-        <View className="absolute right-6 bottom-[15%] bg-white rounded-[20px] px-4 py-2 z-10" style={styles.bubble}>
+        <View className="absolute right-6 bottom-[15%] bg-white rounded-xl px-4 py-2 z-10" style={styles.bubble}>
           <Text style={{ fontFamily: "Poppins-SemiBold", color: "#E53935" }} className="text-sm font-semibold">
             你好!
           </Text>
@@ -66,7 +66,7 @@ export default function OnboardingScreen() {
         <TouchableOpacity
           className="btn btn--primary"
           activeOpacity={0.85}
-          onPress={() => router.push("/(auth)/sign-in" as never)}
+          onPress={() => router.push("/(auth)/sign-up" as never)}
         >
           <Text className="btn__label text-white">Get Started</Text>
           <Text style={{ color: colors.white }} className="text-2xl font-semibold leading-none ml-2">›</Text>
