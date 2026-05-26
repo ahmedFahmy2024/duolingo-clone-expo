@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect, useCallback, memo } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useLanguageStore } from "@/store/languageStore";
 import { useProgressStore, type LessonStatus } from "@/store/progressStore";
 import { getLanguage } from "@/data/languages";
@@ -202,6 +203,7 @@ const PracticeTab = memo(function PracticeTab() {
 
 export default function LearnScreen() {
   const [activeTab, setActiveTab] = useState<Tab>("lessons");
+  const router = useRouter();
 
   const { selectedLanguage } = useLanguageStore();
   const { getLessonStatus, setInProgress, seedMockProgress } = useProgressStore();
@@ -223,8 +225,9 @@ export default function LearnScreen() {
       if (getLessonStatus(lessonId) !== "completed") {
         setInProgress(lessonId);
       }
+      router.push({ pathname: "/lesson/[id]", params: { id: lessonId } });
     },
-    [getLessonStatus, setInProgress]
+    [getLessonStatus, setInProgress, router]
   );
 
   if (!language || !currentUnit) {

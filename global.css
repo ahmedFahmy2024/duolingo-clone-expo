@@ -859,6 +859,239 @@
     color: var(--color-text-secondary);
   }
 
+  /* ============================================================
+     AUDIO LESSON SCREEN  (BEM-style)
+     ============================================================ */
+
+  /* Full-screen dark overlay */
+  .audio-lesson {
+    flex: 1;
+    background-color: #0A0A1A;
+  }
+
+  /* Top nav bar */
+  .audio-lesson__nav {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .audio-lesson__nav-back {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .audio-lesson__nav-title {
+    font-size: var(--font-size-body-lg);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: #FFFFFF;
+  }
+
+  .audio-lesson__nav-actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .audio-lesson__nav-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: rgba(255, 255, 255, 0.1);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .audio-lesson__status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-success);
+  }
+
+  .audio-lesson__status-label {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: var(--color-success);
+  }
+
+  /* Teacher preview area (top section) */
+  .audio-lesson__teacher-area {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Mascot / teacher image container */
+  .audio-lesson__mascot-wrap {
+    width: 220px;
+    height: 220px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    background-color: rgba(108, 78, 245, 0.15);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Student PiP thumbnail (top-right) */
+  .audio-lesson__pip {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    width: 80px;
+    height: 100px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.08);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Teacher speech bubble */
+  .audio-lesson__bubble {
+    background-color: #FFFFFF;
+    border-radius: var(--radius-xl);
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
+    margin-left: 20px;
+    margin-right: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .audio-lesson__bubble-text {
+    flex: 1;
+  }
+
+  .audio-lesson__bubble-phrase {
+    font-size: var(--font-size-body-lg);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: var(--color-text-primary);
+  }
+
+  .audio-lesson__bubble-translation {
+    font-size: var(--font-size-body-sm);
+    font-weight: 400;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  .audio-lesson__bubble-speaker {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: rgba(108, 78, 245, 0.1);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Controls row */
+  .audio-lesson__controls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 28px;
+    padding-bottom: 12px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .audio-lesson__ctrl-btn {
+    align-items: center;
+    gap: 6px;
+  }
+
+  .audio-lesson__ctrl-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background-color: rgba(255, 255, 255, 0.1);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .audio-lesson__ctrl-icon--mic-active {
+    background-color: var(--color-lingua-purple);
+  }
+
+  .audio-lesson__ctrl-icon--end {
+    background-color: var(--color-error);
+  }
+
+  .audio-lesson__ctrl-label {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Feedback scores section */
+  .audio-lesson__feedback {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-xl);
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 24px;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .audio-lesson__feedback-item {
+    align-items: center;
+    gap: 4px;
+  }
+
+  .audio-lesson__feedback-label {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .audio-lesson__feedback-score {
+    font-size: var(--font-size-body-sm);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+  }
+
+  .audio-lesson__feedback-score--excellent {
+    color: var(--color-success);
+  }
+
+  .audio-lesson__feedback-score--great {
+    color: var(--color-info);
+  }
+
+  .audio-lesson__feedback-score--good {
+    color: var(--color-warning);
+  }
+
+  .audio-lesson__feedback-divider {
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    align-self: stretch;
+  }
+
   /* Practice empty state */
   .practice-empty {
     flex: 1;
