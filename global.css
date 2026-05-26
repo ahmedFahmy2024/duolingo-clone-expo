@@ -653,4 +653,235 @@
     align-items: center;
     justify-content: center;
   }
+
+  /* ============================================================
+     LESSONS SCREEN  (BEM-style)
+     ============================================================ */
+
+  /* Unit header banner — background color set dynamically via style= */
+  .unit-header {
+    padding-top: 16px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    min-height: 160px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .unit-header__nav {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .unit-header__icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background-color: rgba(255, 255, 255, 0.18);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unit-header__subtitle {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 2px;
+  }
+
+  .unit-header__title {
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    font-family: var(--font-poppins);
+    color: #FFFFFF;
+  }
+
+  /* Tab bar within lessons screen */
+  .lessons-tab-bar {
+    flex-direction: row;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border);
+    background-color: var(--color-background);
+  }
+
+  .lessons-tab {
+    flex: 1;
+    align-items: center;
+    padding-top: 14px;
+    padding-bottom: 12px;
+  }
+
+  .lessons-tab--active {
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-lingua-purple);
+  }
+
+  .lessons-tab__label {
+    font-size: var(--font-size-body-md);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+  }
+
+  .lessons-tab__label--active {
+    color: var(--color-lingua-purple);
+    font-weight: 600;
+  }
+
+  /* Lesson card */
+  .lesson-card {
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--color-background);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    border-width: 1px;
+    border-color: var(--color-border);
+    gap: 14px;
+  }
+
+  .lesson-card--active {
+    background-color: var(--color-lingua-purple);
+    border-color: var(--color-lingua-purple);
+  }
+
+  .lesson-card__image-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--color-surface);
+    flex-shrink: 0;
+  }
+
+  .lesson-card__number {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .lesson-card__number--active {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .lesson-card__title {
+    font-size: var(--font-size-body-md);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: var(--color-text-primary);
+  }
+
+  .lesson-card__title--active {
+    color: #FFFFFF;
+  }
+
+  .lesson-card__meta {
+    font-size: var(--font-size-caption);
+    font-weight: 400;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  .lesson-card__meta--active {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .lesson-card__status {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .lesson-card__status--completed {
+    background-color: var(--color-success);
+  }
+
+  .lesson-card__status--in-progress {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .lesson-card__status--locked {
+    background-color: var(--color-surface);
+    border-width: 1.5px;
+    border-color: var(--color-border);
+  }
+
+  .lesson-card__in-progress-badge {
+    background-color: rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-full);
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 9px;
+    padding-right: 9px;
+    align-self: flex-start;
+    margin-top: 5px;
+  }
+
+  .lesson-card__in-progress-label {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Unit section divider row (between units in the list) */
+  .unit-section__header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    padding-bottom: 10px;
+  }
+
+  .unit-section__label {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .unit-section__progress {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+  }
+
+  /* Practice empty state */
+  .practice-empty {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .practice-empty__title {
+    font-size: var(--font-size-h4);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: var(--color-text-primary);
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .practice-empty__subtitle {
+    font-size: var(--font-size-body-sm);
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    margin-top: 6px;
+    text-align: center;
+  }
 }

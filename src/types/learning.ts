@@ -46,7 +46,7 @@ export interface MultipleChoiceActivity {
 
 export interface MatchPairsActivity {
   type: "match_pairs";
-  pairs: Array<{ left: string; right: string }>;
+  pairs: { left: string; right: string }[];
 }
 
 export interface FillBlankActivity {

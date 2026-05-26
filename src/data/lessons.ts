@@ -354,6 +354,306 @@ export const LESSONS: Lesson[] = [
     ],
   },
 
+  {
+    id: "fr-u1-l3",
+    unitId: "fr-u1",
+    languageCode: "fr",
+    type: "vocabulary",
+    title: "Numbers 1–10",
+    description: "Count to ten in French.",
+    xpReward: 10,
+    goals: [
+      "Count from one to ten in French",
+      "Recognize written number words",
+      "Use numbers in simple sentences",
+    ],
+    vocabulary: [
+      { word: "un", translation: "one", pronunciation: "uhn" },
+      { word: "deux", translation: "two", pronunciation: "duh" },
+      { word: "trois", translation: "three", pronunciation: "twah" },
+      { word: "quatre", translation: "four", pronunciation: "KAH-truh" },
+      { word: "cinq", translation: "five", pronunciation: "sank" },
+      { word: "six", translation: "six", pronunciation: "sees" },
+      { word: "sept", translation: "seven", pronunciation: "set" },
+      { word: "huit", translation: "eight", pronunciation: "weet" },
+      { word: "neuf", translation: "nine", pronunciation: "nuhf" },
+      { word: "dix", translation: "ten", pronunciation: "dees" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What does 'cinq' mean?",
+        options: ["four", "five", "six", "seven"],
+        correctIndex: 1,
+      },
+      {
+        type: "match_pairs",
+        pairs: [
+          { left: "un", right: "one" },
+          { left: "trois", right: "three" },
+          { left: "sept", right: "seven" },
+          { left: "dix", right: "ten" },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "fr-u1-l4",
+    unitId: "fr-u1",
+    languageCode: "fr",
+    type: "vocabulary",
+    title: "Colors",
+    description: "Learn the colors in French.",
+    xpReward: 10,
+    goals: [
+      "Name common colors in French",
+      "Describe objects using color adjectives",
+      "Understand color agreement rules",
+    ],
+    vocabulary: [
+      { word: "rouge", translation: "red", pronunciation: "roozh" },
+      { word: "bleu", translation: "blue", pronunciation: "bluh" },
+      { word: "vert", translation: "green", pronunciation: "vehr" },
+      { word: "jaune", translation: "yellow", pronunciation: "zhohn" },
+      { word: "noir", translation: "black", pronunciation: "nwahr" },
+      { word: "blanc", translation: "white", pronunciation: "blahn" },
+      { word: "orange", translation: "orange", pronunciation: "oh-RAHNZH" },
+      { word: "violet", translation: "purple", pronunciation: "vyoh-LEH" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What color is 'rouge'?",
+        options: ["blue", "green", "red", "yellow"],
+        correctIndex: 2,
+      },
+      {
+        type: "fill_blank",
+        sentence: "Le ciel est ___.",
+        answer: "bleu",
+        hint: "The sky is ... (color of the sky)",
+      },
+    ],
+  },
+
+  {
+    id: "fr-u1-l5",
+    unitId: "fr-u1",
+    languageCode: "fr",
+    type: "phrases",
+    title: "At the Café",
+    description: "Order food and drinks at a French café.",
+    xpReward: 15,
+    goals: [
+      "Order a drink or food in French",
+      "Ask for the bill politely",
+      "Understand a menu",
+    ],
+    phrases: [
+      { phrase: "Un café, s'il vous plaît.", translation: "A coffee, please.", pronunciation: "uhn kah-FAY seel voo PLEH" },
+      { phrase: "L'addition, s'il vous plaît.", translation: "The bill, please.", pronunciation: "lah-dee-SYOHN seel voo PLEH" },
+      { phrase: "Je voudrais ___.", translation: "I would like ___.", pronunciation: "zhuh voo-DREH" },
+      { phrase: "C'est combien ?", translation: "How much is it?", pronunciation: "seh kom-BYAHN" },
+      { phrase: "Avez-vous une table ?", translation: "Do you have a table?", pronunciation: "ah-vay-VOO ewn TAH-bluh" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "How do you ask for the bill?",
+        options: ["Un café, s'il vous plaît.", "Je voudrais un thé.", "L'addition, s'il vous plaît.", "C'est combien ?"],
+        correctIndex: 2,
+      },
+      {
+        type: "fill_blank",
+        sentence: "Je ___ un croissant.",
+        answer: "voudrais",
+        hint: "I would like...",
+      },
+    ],
+  },
+
+  {
+    id: "fr-u1-l6",
+    unitId: "fr-u1",
+    languageCode: "fr",
+    type: "ai_teacher",
+    title: "AI Conversation Practice",
+    description: "Practice your French with an AI conversation partner.",
+    xpReward: 20,
+    goals: [
+      "Hold a short conversation in French",
+      "Use greetings and introductions naturally",
+      "Build speaking confidence",
+    ],
+    activities: [
+      {
+        type: "listen_repeat",
+        targetText: "Bonjour! Comment allez-vous ?",
+        audioKey: "fr-greeting-intro",
+      },
+      {
+        type: "listen_repeat",
+        targetText: "Je vais bien, merci. Et vous ?",
+        audioKey: "fr-greeting-response",
+      },
+    ],
+    aiTeacherPrompt: {
+      systemPrompt:
+        "You are Claire, a friendly French teacher for absolute beginners. " +
+        "Speak slowly and use simple vocabulary. Correct errors gently.",
+      intro: "Bonjour ! Je suis Claire. Parlons français ensemble !",
+      teachingPoints: [
+        "Formal vs informal greetings",
+        "Introducing yourself",
+        "Asking how someone is",
+      ],
+      checkQuestions: [
+        "How do you say hello in French?",
+        "How would you introduce yourself?",
+      ],
+    },
+  },
+
+  // ── French Unit 2: Daily Life ──────────────────────────────────────────────
+  {
+    id: "fr-u2-l1",
+    unitId: "fr-u2",
+    languageCode: "fr",
+    type: "vocabulary",
+    title: "Food & Drinks",
+    description: "Essential vocabulary for food and drinks.",
+    xpReward: 10,
+    goals: ["Name common foods in French", "Order food at a restaurant", "Understand a French menu"],
+    vocabulary: [
+      { word: "le pain", translation: "bread", pronunciation: "luh pahn" },
+      { word: "le fromage", translation: "cheese", pronunciation: "luh froh-MAZH" },
+      { word: "le vin", translation: "wine", pronunciation: "luh vahn" },
+      { word: "l'eau", translation: "water", pronunciation: "loh" },
+      { word: "le poulet", translation: "chicken", pronunciation: "luh poo-LEH" },
+      { word: "les légumes", translation: "vegetables", pronunciation: "leh leh-GEWM" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What does 'le pain' mean?",
+        options: ["wine", "cheese", "bread", "water"],
+        correctIndex: 2,
+      },
+      {
+        type: "match_pairs",
+        pairs: [
+          { left: "le fromage", right: "cheese" },
+          { left: "le vin", right: "wine" },
+          { left: "l'eau", right: "water" },
+          { left: "le poulet", right: "chicken" },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "fr-u2-l2",
+    unitId: "fr-u2",
+    languageCode: "fr",
+    type: "vocabulary",
+    title: "Days of the Week",
+    description: "Learn the days of the week in French.",
+    xpReward: 10,
+    goals: ["Say all seven days in French", "Ask what day it is", "Discuss weekly plans"],
+    vocabulary: [
+      { word: "lundi", translation: "Monday", pronunciation: "luhn-DEE" },
+      { word: "mardi", translation: "Tuesday", pronunciation: "mar-DEE" },
+      { word: "mercredi", translation: "Wednesday", pronunciation: "mehr-kruh-DEE" },
+      { word: "jeudi", translation: "Thursday", pronunciation: "zhuh-DEE" },
+      { word: "vendredi", translation: "Friday", pronunciation: "vahn-druh-DEE" },
+      { word: "samedi", translation: "Saturday", pronunciation: "sahm-DEE" },
+      { word: "dimanche", translation: "Sunday", pronunciation: "dee-MAHNSH" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "Which day is 'vendredi'?",
+        options: ["Thursday", "Saturday", "Friday", "Wednesday"],
+        correctIndex: 2,
+      },
+    ],
+  },
+
+  {
+    id: "fr-u2-l3",
+    unitId: "fr-u2",
+    languageCode: "fr",
+    type: "phrases",
+    title: "Family & Friends",
+    description: "Talk about your family and friends in French.",
+    xpReward: 10,
+    goals: ["Name family members in French", "Describe relationships", "Talk about your family size"],
+    phrases: [
+      { phrase: "J'ai un frère.", translation: "I have a brother.", pronunciation: "zhay uhn frehr" },
+      { phrase: "Ma famille est grande.", translation: "My family is big.", pronunciation: "mah fah-MEE eh GRAHND" },
+      { phrase: "C'est mon ami.", translation: "This is my friend (male).", pronunciation: "seh mohn ah-MEE" },
+    ],
+    activities: [
+      {
+        type: "fill_blank",
+        sentence: "J'ai une ___.",
+        answer: "sœur",
+        hint: "I have a sister",
+      },
+    ],
+  },
+
+  {
+    id: "fr-u2-l4",
+    unitId: "fr-u2",
+    languageCode: "fr",
+    type: "vocabulary",
+    title: "Travel & Directions",
+    description: "Navigate and ask for directions in French.",
+    xpReward: 15,
+    goals: ["Ask for directions in French", "Understand basic directions", "Name key places in a city"],
+    vocabulary: [
+      { word: "à gauche", translation: "to the left", pronunciation: "ah gohsh" },
+      { word: "à droite", translation: "to the right", pronunciation: "ah drwat" },
+      { word: "tout droit", translation: "straight ahead", pronunciation: "too drwah" },
+      { word: "la gare", translation: "the train station", pronunciation: "lah gar" },
+      { word: "l'hôtel", translation: "the hotel", pronunciation: "loh-TEL" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "How do you say 'to the left'?",
+        options: ["tout droit", "à droite", "à gauche", "la gare"],
+        correctIndex: 2,
+      },
+    ],
+  },
+
+  {
+    id: "fr-u2-l5",
+    unitId: "fr-u2",
+    languageCode: "fr",
+    type: "phrases",
+    title: "Shopping",
+    description: "Shop and ask about prices in French.",
+    xpReward: 10,
+    goals: ["Ask for a price in French", "Say what you want to buy", "Understand shop vocabulary"],
+    phrases: [
+      { phrase: "C'est combien ?", translation: "How much is it?", pronunciation: "seh kom-BYAHN" },
+      { phrase: "Je prends ça.", translation: "I'll take this.", pronunciation: "zhuh prahn sah" },
+      { phrase: "Avez-vous ça en rouge ?", translation: "Do you have this in red?", pronunciation: "ah-vay-VOO sah ahn roozh" },
+    ],
+    activities: [
+      {
+        type: "translate_sentence",
+        sourceText: "How much is it?",
+        sourceLanguage: "en",
+        acceptedAnswers: ["C'est combien ?", "C'est combien?"],
+      },
+    ],
+  },
+
   // ══════════════════════════════════════════════════════════════════════════
   // JAPANESE — Unit 1: Greetings & Basics
   // ══════════════════════════════════════════════════════════════════════════
@@ -444,6 +744,233 @@ export const LESSONS: Lesson[] = [
         sourceLanguage: "en",
         acceptedAnswers: ["わたしは ゆき です。", "わたしはゆきです。", "ゆきです。"],
       },
+    ],
+  },
+
+  {
+    id: "ja-u1-l3",
+    unitId: "ja-u1",
+    languageCode: "ja",
+    type: "vocabulary",
+    title: "Numbers 1–10",
+    description: "Count to ten in Japanese.",
+    xpReward: 10,
+    goals: ["Count from one to ten in Japanese", "Recognize kanji numbers", "Use numbers in context"],
+    vocabulary: [
+      { word: "いち", translation: "one", pronunciation: "i-chi" },
+      { word: "に", translation: "two", pronunciation: "ni" },
+      { word: "さん", translation: "three", pronunciation: "san" },
+      { word: "し / よん", translation: "four", pronunciation: "shi / yon" },
+      { word: "ご", translation: "five", pronunciation: "go" },
+      { word: "ろく", translation: "six", pronunciation: "ro-ku" },
+      { word: "しち / なな", translation: "seven", pronunciation: "shi-chi / na-na" },
+      { word: "はち", translation: "eight", pronunciation: "ha-chi" },
+      { word: "く / きゅう", translation: "nine", pronunciation: "ku / kyuu" },
+      { word: "じゅう", translation: "ten", pronunciation: "jyuu" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What does 'ご' mean?",
+        options: ["four", "five", "six", "seven"],
+        correctIndex: 1,
+      },
+      {
+        type: "match_pairs",
+        pairs: [
+          { left: "いち", right: "one" },
+          { left: "さん", right: "three" },
+          { left: "ろく", right: "six" },
+          { left: "じゅう", right: "ten" },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "ja-u1-l4",
+    unitId: "ja-u1",
+    languageCode: "ja",
+    type: "vocabulary",
+    title: "Colors",
+    description: "Learn the colors in Japanese.",
+    xpReward: 10,
+    goals: ["Name colors in Japanese", "Use color adjectives", "Describe everyday objects"],
+    vocabulary: [
+      { word: "あか", translation: "red", pronunciation: "a-ka" },
+      { word: "あお", translation: "blue", pronunciation: "a-o" },
+      { word: "きいろ", translation: "yellow", pronunciation: "ki-i-ro" },
+      { word: "しろ", translation: "white", pronunciation: "shi-ro" },
+      { word: "くろ", translation: "black", pronunciation: "ku-ro" },
+      { word: "みどり", translation: "green", pronunciation: "mi-do-ri" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What color is 'あか'?",
+        options: ["blue", "green", "red", "yellow"],
+        correctIndex: 2,
+      },
+    ],
+  },
+
+  {
+    id: "ja-u1-l5",
+    unitId: "ja-u1",
+    languageCode: "ja",
+    type: "phrases",
+    title: "At a Restaurant",
+    description: "Order food and ask for the bill in Japanese.",
+    xpReward: 15,
+    goals: ["Order food in Japanese", "Ask for the bill", "Express food preferences"],
+    phrases: [
+      { phrase: "これをください。", translation: "This one, please.", pronunciation: "ko-re-o ku-da-sa-i" },
+      { phrase: "おかんじょうをください。", translation: "The bill, please.", pronunciation: "o-kan-jo-o-o ku-da-sa-i" },
+      { phrase: "おいしい！", translation: "Delicious!", pronunciation: "o-i-shi-i" },
+      { phrase: "メニューをみせてください。", translation: "Please show me the menu.", pronunciation: "me-nyuu-o mi-se-te ku-da-sa-i" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "How do you say 'Delicious!' in Japanese?",
+        options: ["ありがとう", "おいしい！", "ください", "さようなら"],
+        correctIndex: 1,
+      },
+    ],
+  },
+
+  {
+    id: "ja-u1-l6",
+    unitId: "ja-u1",
+    languageCode: "ja",
+    type: "ai_teacher",
+    title: "AI Conversation Practice",
+    description: "Practice Japanese conversation with your AI teacher.",
+    xpReward: 20,
+    goals: ["Hold a short conversation in Japanese", "Use greetings naturally", "Build speaking confidence"],
+    activities: [
+      {
+        type: "listen_repeat",
+        targetText: "こんにちは！おなまえはなんですか？",
+        audioKey: "ja-greeting-intro",
+      },
+      {
+        type: "listen_repeat",
+        targetText: "わたしは ___ です。よろしく！",
+        audioKey: "ja-greeting-response",
+      },
+    ],
+    aiTeacherPrompt: {
+      systemPrompt:
+        "You are Hana, a warm and encouraging Japanese teacher for beginners. " +
+        "Use simple Japanese with romaji hints. Celebrate small wins.",
+      intro: "こんにちは！わたしはHanaです。いっしょにれんしゅうしましょう！",
+      teachingPoints: ["Polite vs casual speech", "Introducing yourself", "Basic greetings"],
+      checkQuestions: ["How do you say good morning?", "How would you introduce yourself?"],
+    },
+  },
+
+  // ── Japanese Unit 2: Numbers & Time ──────────────────────────────────────
+  {
+    id: "ja-u2-l1",
+    unitId: "ja-u2",
+    languageCode: "ja",
+    type: "vocabulary",
+    title: "Numbers 11–100",
+    description: "Count beyond ten in Japanese.",
+    xpReward: 10,
+    goals: ["Count from 11 to 100", "Form compound numbers", "Use numbers in daily context"],
+    vocabulary: [
+      { word: "じゅういち", translation: "eleven", pronunciation: "jyuu-i-chi" },
+      { word: "じゅうに", translation: "twelve", pronunciation: "jyuu-ni" },
+      { word: "にじゅう", translation: "twenty", pronunciation: "ni-jyuu" },
+      { word: "ひゃく", translation: "one hundred", pronunciation: "hya-ku" },
+    ],
+    activities: [
+      { type: "multiple_choice", prompt: "What does 'にじゅう' mean?", options: ["twelve", "twenty", "two hundred", "thirty"], correctIndex: 1 },
+    ],
+  },
+
+  {
+    id: "ja-u2-l2",
+    unitId: "ja-u2",
+    languageCode: "ja",
+    type: "phrases",
+    title: "Telling the Time",
+    description: "Ask and tell the time in Japanese.",
+    xpReward: 10,
+    goals: ["Ask what time it is", "Say the hour in Japanese", "Understand AM and PM"],
+    phrases: [
+      { phrase: "いまなんじですか？", translation: "What time is it now?", pronunciation: "i-ma nan-ji des-ka" },
+      { phrase: "___ じです。", translation: "It is ___ o'clock.", pronunciation: "___ ji des" },
+      { phrase: "ごぜん", translation: "AM (morning)", pronunciation: "go-zen" },
+      { phrase: "ごご", translation: "PM (afternoon)", pronunciation: "go-go" },
+    ],
+    activities: [
+      { type: "fill_blank", sentence: "いまさんじ___。", answer: "です", hint: "It is three o'clock" },
+    ],
+  },
+
+  {
+    id: "ja-u2-l3",
+    unitId: "ja-u2",
+    languageCode: "ja",
+    type: "vocabulary",
+    title: "Days of the Week",
+    description: "Learn the days of the week in Japanese.",
+    xpReward: 10,
+    goals: ["Say all seven days in Japanese", "Ask what day it is", "Plan the week"],
+    vocabulary: [
+      { word: "げつようび", translation: "Monday", pronunciation: "ge-tsu-yo-o-bi" },
+      { word: "かようび", translation: "Tuesday", pronunciation: "ka-yo-o-bi" },
+      { word: "すいようび", translation: "Wednesday", pronunciation: "su-i-yo-o-bi" },
+      { word: "もくようび", translation: "Thursday", pronunciation: "mo-ku-yo-o-bi" },
+      { word: "きんようび", translation: "Friday", pronunciation: "ki-n-yo-o-bi" },
+      { word: "どようび", translation: "Saturday", pronunciation: "do-yo-o-bi" },
+      { word: "にちようび", translation: "Sunday", pronunciation: "ni-chi-yo-o-bi" },
+    ],
+    activities: [
+      { type: "multiple_choice", prompt: "Which day is 'きんようび'?", options: ["Thursday", "Saturday", "Friday", "Wednesday"], correctIndex: 2 },
+    ],
+  },
+
+  {
+    id: "ja-u2-l4",
+    unitId: "ja-u2",
+    languageCode: "ja",
+    type: "phrases",
+    title: "Shopping",
+    description: "Shop and bargain in Japanese.",
+    xpReward: 10,
+    goals: ["Ask for a price", "Say what you want to buy", "Thank the shopkeeper"],
+    phrases: [
+      { phrase: "いくらですか？", translation: "How much is it?", pronunciation: "i-ku-ra des-ka" },
+      { phrase: "これをください。", translation: "I'll take this one.", pronunciation: "ko-re-o ku-da-sa-i" },
+      { phrase: "たかいですね。", translation: "That's expensive.", pronunciation: "ta-ka-i des ne" },
+    ],
+    activities: [
+      { type: "translate_sentence", sourceText: "How much is it?", sourceLanguage: "en", acceptedAnswers: ["いくらですか？", "いくらですか"] },
+    ],
+  },
+
+  {
+    id: "ja-u2-l5",
+    unitId: "ja-u2",
+    languageCode: "ja",
+    type: "phrases",
+    title: "Family & Friends",
+    description: "Talk about family members in Japanese.",
+    xpReward: 10,
+    goals: ["Name family members in Japanese", "Describe your family", "Introduce family members"],
+    phrases: [
+      { phrase: "わたしのかぞく", translation: "my family", pronunciation: "wa-ta-shi-no ka-zo-ku" },
+      { phrase: "おかあさん", translation: "mother", pronunciation: "o-kaa-san" },
+      { phrase: "おとうさん", translation: "father", pronunciation: "o-too-san" },
+      { phrase: "あに / おにいさん", translation: "older brother", pronunciation: "a-ni / o-nii-san" },
+      { phrase: "あね / おねえさん", translation: "older sister", pronunciation: "a-ne / o-nee-san" },
+    ],
+    activities: [
+      { type: "multiple_choice", prompt: "What does 'おかあさん' mean?", options: ["father", "sister", "mother", "brother"], correctIndex: 2 },
     ],
   },
 
@@ -538,6 +1065,243 @@ export const LESSONS: Lesson[] = [
         answer: "komme",
         hint: "I come from ...",
       },
+    ],
+  },
+
+  {
+    id: "de-u1-l3",
+    unitId: "de-u1",
+    languageCode: "de",
+    type: "vocabulary",
+    title: "Numbers 1–10",
+    description: "Count to ten in German.",
+    xpReward: 10,
+    goals: ["Count from one to ten in German", "Recognize number words", "Use numbers in simple sentences"],
+    vocabulary: [
+      { word: "eins", translation: "one", pronunciation: "ayns" },
+      { word: "zwei", translation: "two", pronunciation: "tsvay" },
+      { word: "drei", translation: "three", pronunciation: "dry" },
+      { word: "vier", translation: "four", pronunciation: "feer" },
+      { word: "fünf", translation: "five", pronunciation: "fuenf" },
+      { word: "sechs", translation: "six", pronunciation: "zeks" },
+      { word: "sieben", translation: "seven", pronunciation: "ZEE-ben" },
+      { word: "acht", translation: "eight", pronunciation: "ahkt" },
+      { word: "neun", translation: "nine", pronunciation: "noyn" },
+      { word: "zehn", translation: "ten", pronunciation: "tsayn" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What does 'fünf' mean?",
+        options: ["four", "five", "six", "seven"],
+        correctIndex: 1,
+      },
+      {
+        type: "match_pairs",
+        pairs: [
+          { left: "eins", right: "one" },
+          { left: "drei", right: "three" },
+          { left: "sieben", right: "seven" },
+          { left: "zehn", right: "ten" },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "de-u1-l4",
+    unitId: "de-u1",
+    languageCode: "de",
+    type: "vocabulary",
+    title: "Colors",
+    description: "Learn the colors in German.",
+    xpReward: 10,
+    goals: ["Name colors in German", "Use color adjectives", "Describe objects by color"],
+    vocabulary: [
+      { word: "rot", translation: "red", pronunciation: "roht" },
+      { word: "blau", translation: "blue", pronunciation: "blow" },
+      { word: "grün", translation: "green", pronunciation: "grewn" },
+      { word: "gelb", translation: "yellow", pronunciation: "gelp" },
+      { word: "schwarz", translation: "black", pronunciation: "shvarts" },
+      { word: "weiß", translation: "white", pronunciation: "vays" },
+      { word: "orange", translation: "orange", pronunciation: "oh-RAN-zheh" },
+      { word: "lila", translation: "purple", pronunciation: "LEE-lah" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "What color is 'blau'?",
+        options: ["red", "green", "blue", "yellow"],
+        correctIndex: 2,
+      },
+      {
+        type: "fill_blank",
+        sentence: "Der Himmel ist ___.",
+        answer: "blau",
+        hint: "The sky is ... (color of the sky)",
+      },
+    ],
+  },
+
+  {
+    id: "de-u1-l5",
+    unitId: "de-u1",
+    languageCode: "de",
+    type: "phrases",
+    title: "At the Café",
+    description: "Order food and drinks at a German café.",
+    xpReward: 15,
+    goals: ["Order a drink or food in German", "Ask for the bill politely", "Be polite in a café"],
+    phrases: [
+      { phrase: "Einen Kaffee, bitte.", translation: "A coffee, please.", pronunciation: "EYE-nen KAF-fay BI-teh" },
+      { phrase: "Die Rechnung, bitte.", translation: "The bill, please.", pronunciation: "dee RECH-noong BI-teh" },
+      { phrase: "Ich möchte ___.", translation: "I would like ___.", pronunciation: "ikh MERKH-teh" },
+      { phrase: "Was kostet das?", translation: "How much does this cost?", pronunciation: "vas KOS-tet das" },
+    ],
+    activities: [
+      {
+        type: "multiple_choice",
+        prompt: "How do you ask for the bill in German?",
+        options: ["Einen Kaffee, bitte.", "Ich möchte Wasser.", "Die Rechnung, bitte.", "Was kostet das?"],
+        correctIndex: 2,
+      },
+      {
+        type: "fill_blank",
+        sentence: "Ich ___ ein Bier.",
+        answer: "möchte",
+        hint: "I would like...",
+      },
+    ],
+  },
+
+  {
+    id: "de-u1-l6",
+    unitId: "de-u1",
+    languageCode: "de",
+    type: "ai_teacher",
+    title: "AI Conversation Practice",
+    description: "Practice German with your AI conversation partner.",
+    xpReward: 20,
+    goals: ["Hold a short conversation in German", "Use greetings naturally", "Build speaking confidence"],
+    activities: [
+      {
+        type: "listen_repeat",
+        targetText: "Hallo! Wie heißt du?",
+        audioKey: "de-greeting-intro",
+      },
+      {
+        type: "listen_repeat",
+        targetText: "Ich heiße ___. Freut mich!",
+        audioKey: "de-greeting-response",
+      },
+    ],
+    aiTeacherPrompt: {
+      systemPrompt:
+        "You are Max, a friendly German teacher for absolute beginners. " +
+        "Use simple German with English hints. Encourage and correct gently.",
+      intro: "Hallo! Ich bin Max, dein Deutschlehrer. Los geht's!",
+      teachingPoints: ["Formal vs informal address", "Introducing yourself", "Basic greetings"],
+      checkQuestions: ["How do you say good morning in German?", "How do you introduce yourself?"],
+    },
+  },
+
+  // ── German Unit 2: Numbers & Colors ──────────────────────────────────────
+  {
+    id: "de-u2-l1",
+    unitId: "de-u2",
+    languageCode: "de",
+    type: "vocabulary",
+    title: "Numbers 11–100",
+    description: "Count beyond ten in German.",
+    xpReward: 10,
+    goals: ["Count from 11 to 100 in German", "Form compound numbers", "Use numbers in context"],
+    vocabulary: [
+      { word: "elf", translation: "eleven", pronunciation: "elf" },
+      { word: "zwölf", translation: "twelve", pronunciation: "tsvelff" },
+      { word: "zwanzig", translation: "twenty", pronunciation: "TSVAN-tsikh" },
+      { word: "hundert", translation: "one hundred", pronunciation: "HOON-dert" },
+    ],
+    activities: [
+      { type: "multiple_choice", prompt: "What does 'zwanzig' mean?", options: ["twelve", "twenty", "two hundred", "thirty"], correctIndex: 1 },
+    ],
+  },
+
+  {
+    id: "de-u2-l2",
+    unitId: "de-u2",
+    languageCode: "de",
+    type: "phrases",
+    title: "Telling the Time",
+    description: "Ask and tell the time in German.",
+    xpReward: 10,
+    goals: ["Ask what time it is", "Say the hour in German", "Use AM and PM"],
+    phrases: [
+      { phrase: "Wie spät ist es?", translation: "What time is it?", pronunciation: "vee shpayt ist es" },
+      { phrase: "Es ist ___ Uhr.", translation: "It is ___ o'clock.", pronunciation: "es ist ___ oor" },
+    ],
+    activities: [
+      { type: "fill_blank", sentence: "Es ist drei ___.", answer: "Uhr", hint: "It is three o'clock" },
+    ],
+  },
+
+  {
+    id: "de-u2-l3",
+    unitId: "de-u2",
+    languageCode: "de",
+    type: "vocabulary",
+    title: "Days of the Week",
+    description: "Learn the days of the week in German.",
+    xpReward: 10,
+    goals: ["Say all seven days in German", "Ask what day it is", "Discuss weekly plans"],
+    vocabulary: [
+      { word: "Montag", translation: "Monday", pronunciation: "MON-tahk" },
+      { word: "Dienstag", translation: "Tuesday", pronunciation: "DEENS-tahk" },
+      { word: "Mittwoch", translation: "Wednesday", pronunciation: "MIT-vokh" },
+      { word: "Donnerstag", translation: "Thursday", pronunciation: "DON-ers-tahk" },
+      { word: "Freitag", translation: "Friday", pronunciation: "FRY-tahk" },
+      { word: "Samstag", translation: "Saturday", pronunciation: "ZAMS-tahk" },
+      { word: "Sonntag", translation: "Sunday", pronunciation: "ZON-tahk" },
+    ],
+    activities: [
+      { type: "multiple_choice", prompt: "Which day is 'Freitag'?", options: ["Thursday", "Saturday", "Friday", "Wednesday"], correctIndex: 2 },
+    ],
+  },
+
+  {
+    id: "de-u2-l4",
+    unitId: "de-u2",
+    languageCode: "de",
+    type: "phrases",
+    title: "Shopping",
+    description: "Shop and ask about prices in German.",
+    xpReward: 10,
+    goals: ["Ask for a price in German", "Say what you want to buy", "Understand shop vocabulary"],
+    phrases: [
+      { phrase: "Was kostet das?", translation: "How much does this cost?", pronunciation: "vas KOS-tet das" },
+      { phrase: "Ich nehme das.", translation: "I'll take this.", pronunciation: "ikh NAY-meh das" },
+      { phrase: "Haben Sie das in Rot?", translation: "Do you have this in red?", pronunciation: "HAH-ben zee das in roht" },
+    ],
+    activities: [
+      { type: "translate_sentence", sourceText: "How much does this cost?", sourceLanguage: "en", acceptedAnswers: ["Was kostet das?"] },
+    ],
+  },
+
+  {
+    id: "de-u2-l5",
+    unitId: "de-u2",
+    languageCode: "de",
+    type: "phrases",
+    title: "Family & Friends",
+    description: "Talk about family members in German.",
+    xpReward: 10,
+    goals: ["Name family members in German", "Describe your family", "Introduce family members"],
+    phrases: [
+      { phrase: "Ich habe einen Bruder.", translation: "I have a brother.", pronunciation: "ikh HA-beh EYE-nen BROO-der" },
+      { phrase: "Meine Familie ist groß.", translation: "My family is big.", pronunciation: "MY-neh fah-MEE-lyeh ist grohs" },
+      { phrase: "Das ist mein Freund.", translation: "This is my friend (male).", pronunciation: "das ist mayn froynd" },
+    ],
+    activities: [
+      { type: "fill_blank", sentence: "Ich habe eine ___.", answer: "Schwester", hint: "I have a sister" },
     ],
   },
 ];

@@ -3,11 +3,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "@clerk/expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useLanguageStore } from "@/store/languageStore";
+import { useProgressStore } from "@/store/progressStore";
 import { getLanguage } from "@/data/languages";
 import { getUnitsForLanguage } from "@/data/units";
 import { images } from "@/constants/images";
 
-const DAILY_XP = 15;
 const DAILY_GOAL_XP = 20;
 const STREAK_COUNT = 12;
 
@@ -44,14 +44,15 @@ const TODAY_PLAN = [
 export default function HomeScreen() {
   const { user } = useUser();
   const { selectedLanguage } = useLanguageStore();
+  const { totalXP } = useProgressStore();
 
   const language = selectedLanguage ? getLanguage(selectedLanguage) : null;
   const units = selectedLanguage ? getUnitsForLanguage(selectedLanguage) : [];
   const currentUnit = units[0] ?? null;
 
   const firstName = user?.firstName ?? user?.username ?? "Learner";
-  // Dynamic: calculated at runtime — StyleSheet exception applies
-  const xpPercent = Math.min((DAILY_XP / DAILY_GOAL_XP) * 100, 100);
+  // Dynamic runtime value — StyleSheet exception applies
+  const xpPercent = Math.min((totalXP / DAILY_GOAL_XP) * 100, 100);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -84,7 +85,7 @@ export default function HomeScreen() {
             <View className="flex-1 gap-2">
               <Text className="daily-goal__label">Daily goal</Text>
               <Text className="daily-goal__xp">
-                {DAILY_XP}{" "}
+                {totalXP}{" "}
                 <Text className="daily-goal__xp-total">/ {DAILY_GOAL_XP} XP</Text>
               </Text>
               {/* Progress bar — width is dynamic, so style= is the exception */}
@@ -118,7 +119,7 @@ export default function HomeScreen() {
           {/* ── Today's Plan ── */}
           <View className="gap-3">
             <View className="flex-row items-center justify-between">
-              <Text className="text--h4">Today's plan</Text>
+              <Text className="text--h4">Today&apos;s plan</Text>
               <TouchableOpacity activeOpacity={0.7}>
                 <Text className="text--body-md font-semibold text-lingua-purple">
                   View all

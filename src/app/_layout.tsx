@@ -12,6 +12,8 @@ import { PostHogProvider } from "posthog-react-native";
 SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+const postHogKey = process.env.EXPO_PUBLIC_POSTHOG_KEY;
+const postHogHost = process.env.EXPO_PUBLIC_POSTHOG_HOST;
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -31,10 +33,14 @@ export default function RootLayout() {
     return null;
   }
 
+  if (!postHogKey) {
+    console.warn("EXPO_PUBLIC_POSTHOG_KEY is not set — PostHog analytics disabled.");
+  }
+
   return (
     <PostHogProvider
-      apiKey={process.env.EXPO_PUBLIC_POSTHOG_KEY!}
-      options={{ host: process.env.EXPO_PUBLIC_POSTHOG_HOST }}
+      apiKey={postHogKey ?? ""}
+      options={postHogHost ? { host: postHogHost } : undefined}
     >
       <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
         <StatusBar style="dark" />
