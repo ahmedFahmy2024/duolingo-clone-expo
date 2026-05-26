@@ -7,6 +7,7 @@ export const LANGUAGES: Language[] = [
     nativeName: "Español",
     flag: "🇪🇸",
     totalUnits: 5,
+    learners: "28.4M learners",
   },
   {
     code: "fr",
@@ -14,6 +15,7 @@ export const LANGUAGES: Language[] = [
     nativeName: "Français",
     flag: "🇫🇷",
     totalUnits: 5,
+    learners: "19.4M learners",
   },
   {
     code: "ja",
@@ -21,6 +23,7 @@ export const LANGUAGES: Language[] = [
     nativeName: "日本語",
     flag: "🇯🇵",
     totalUnits: 5,
+    learners: "12.7M learners",
   },
   {
     code: "de",
@@ -28,6 +31,7 @@ export const LANGUAGES: Language[] = [
     nativeName: "Deutsch",
     flag: "🇩🇪",
     totalUnits: 5,
+    learners: "8.1M learners",
   },
 ];
 

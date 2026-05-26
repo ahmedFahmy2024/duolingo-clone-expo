@@ -8,6 +8,7 @@ export interface Language {
   nativeName: string;
   flag: string; // emoji flag
   totalUnits: number;
+  learners: string; // formatted learner count e.g. "28.4M learners"
 }
 
 // ─── Vocabulary & Phrases ─────────────────────────────────────────────────────

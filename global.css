@@ -374,4 +374,67 @@
     background-color: var(--color-border);
     width: 100%;
   }
+
+  /* ============================================================
+     LANGUAGE CARD  (BEM-style)
+     ============================================================ */
+
+  .language-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: var(--radius-lg);
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: var(--color-background);
+    border-width: 1.5px;
+    border-color: var(--color-border);
+  }
+
+  .language-card--selected {
+    border-color: var(--color-lingua-purple);
+    background-color: #f5f3ff;
+  }
+
+  .language-card__flag {
+    font-size: 32px;
+    line-height: 40px;
+    width: 44px;
+    height: 44px;
+    text-align: center;
+  }
+
+  .language-card__check {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-lingua-purple);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ============================================================
+     SEARCH INPUT  (BEM-style)
+     ============================================================ */
+
+  .search-input {
+    flex-direction: row;
+    align-items: center;
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 10px;
+  }
+
+  .search-input__text {
+    flex: 1;
+    font-size: var(--font-size-body-md);
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+  }
 }

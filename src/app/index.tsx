@@ -3,13 +3,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Redirect, useRouter } from "expo-router";
 import { useAuth } from "@clerk/expo";
 import { colors } from "@/theme";
+import { useLanguageStore } from "@/store/languageStore";
+import { getLanguage } from "@/data/languages";
 
 export default function Index() {
   const router = useRouter();
   const { isSignedIn, isLoaded, signOut } = useAuth();
+  const { selectedLanguage, _hasHydrated, clearSelectedLanguage } = useLanguageStore();
+  const language = selectedLanguage ? getLanguage(selectedLanguage) : null;
 
   if (!isLoaded) return null;
   if (!isSignedIn) return <Redirect href="/onboarding" />;
+  if (!_hasHydrated) return null;
+  if (!selectedLanguage) return <Redirect href="/language-selection" />;
 
   async function handleSignOut() {
     await signOut();
@@ -27,7 +33,7 @@ export default function Index() {
           <View className="gap-1">
             <Text className="text--h1">lingua</Text>
             <Text className="text--body-md" style={{ color: colors.textSecondary }}>
-              Design system loaded ✓
+              {language ? `${language.flag}  Learning ${language.name}` : "Design system loaded ✓"}
             </Text>
           </View>
           <TouchableOpacity
@@ -54,6 +60,24 @@ export default function Index() {
           >
             <Text className="btn__label" style={{ color: colors.white }}>
               Onboarding Screen
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="btn btn--secondary"
+            onPress={() => router.push("/language-selection")}
+            activeOpacity={0.85}
+          >
+            <Text className="btn__label" style={{ color: colors.textPrimary }}>
+              Language Selection
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="btn btn--outline"
+            onPress={clearSelectedLanguage}
+            activeOpacity={0.85}
+          >
+            <Text className="btn__label" style={{ color: colors.error }}>
+              Clear language (test)
             </Text>
           </TouchableOpacity>
         </View>
