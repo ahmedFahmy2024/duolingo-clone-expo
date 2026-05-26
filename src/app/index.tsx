@@ -1,8 +1,11 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { colors } from "@/theme";
 
 export default function Index() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
@@ -15,6 +18,20 @@ export default function Index() {
           <Text className="text--body-md" style={{ color: colors.textSecondary }}>
             Design system loaded ✓
           </Text>
+        </View>
+
+        {/* Navigation Links */}
+        <View className="gap-3">
+          <Text className="text--h3">Screens</Text>
+          <TouchableOpacity
+            className="btn btn--primary"
+            onPress={() => router.push("/onboarding")}
+            activeOpacity={0.85}
+          >
+            <Text className="btn__label" style={{ color: colors.white }}>
+              Onboarding Screen
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Color Swatches */}
