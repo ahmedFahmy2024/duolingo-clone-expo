@@ -1092,6 +1092,123 @@
     align-self: stretch;
   }
 
+  /* ============================================================
+     AUDIO LESSON — CALL STATE OVERLAYS  (BEM-style)
+     ============================================================ */
+
+  /* Connecting / loading overlay */
+  .audio-lesson__state-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 10, 26, 0.85);
+    border-radius: var(--radius-full);
+    z-index: 10;
+  }
+
+  .audio-lesson__state-label {
+    font-size: var(--font-size-body-md);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: #FFFFFF;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* User info badge shown when joined */
+  .audio-lesson__user-badge {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    padding-right: 14px;
+    align-self: center;
+    margin-bottom: 8px;
+  }
+
+  .audio-lesson__user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-lingua-purple);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .audio-lesson__user-name {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Error banner */
+  .audio-lesson__error-banner {
+    background-color: rgba(255, 77, 79, 0.15);
+    border-radius: var(--radius-lg);
+    padding: 12px 16px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 8px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .audio-lesson__error-text {
+    flex: 1;
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: #FF4D4F;
+  }
+
+  /* Join call button (idle state) */
+  .audio-lesson__join-btn {
+    background-color: var(--color-lingua-purple);
+    border-radius: var(--radius-full);
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 32px;
+    padding-right: 32px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    align-self: center;
+    margin-bottom: 16px;
+  }
+
+  .audio-lesson__join-btn-label {
+    font-size: var(--font-size-body-md);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: #FFFFFF;
+  }
+
+  /* Ended state overlay inside mascot area */
+  .audio-lesson__ended-badge {
+    background-color: rgba(255, 77, 79, 0.12);
+    border-radius: var(--radius-md);
+    padding: 6px 14px;
+    align-self: center;
+    margin-top: 8px;
+  }
+
+  .audio-lesson__ended-label {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: #FF4D4F;
+  }
+
   /* Practice empty state */
   .practice-empty {
     flex: 1;

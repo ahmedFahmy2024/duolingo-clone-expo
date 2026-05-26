@@ -1,19 +1,78 @@
 import "../../global.css";
 
-import { ClerkProvider } from "@clerk/expo";
+import { ClerkProvider, useUser } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { PostHogProvider } from "posthog-react-native";
+import {
+  StreamVideo,
+  StreamVideoClient,
+} from "@stream-io/video-react-native-sdk";
 
 SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 const postHogKey = process.env.EXPO_PUBLIC_POSTHOG_KEY;
 const postHogHost = process.env.EXPO_PUBLIC_POSTHOG_HOST;
+const streamApiKey = process.env.EXPO_PUBLIC_STREAM_API_KEY!;
+
+// ─── StreamVideo wrapper — only mounts client when Clerk user is ready ────────
+
+function StreamVideoWrapper({ children }: { children: React.ReactNode }) {
+  const { user, isLoaded } = useUser();
+  const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(null);
+
+  useEffect(() => {
+    if (!isLoaded || !user) return;
+
+    const userId = user.id;
+    const userName =
+      user.fullName ??
+      user.primaryEmailAddress?.emailAddress ??
+      userId;
+
+    const tokenProvider = async (): Promise<string> => {
+      const res = await fetch("/api/stream-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, userName, lessonId: "__auth__", languageCode: "en" }),
+      });
+      const data = (await res.json()) as { token: string };
+      return data.token;
+    };
+
+    let active = true;
+    const client = StreamVideoClient.getOrCreateInstance({
+      apiKey: streamApiKey,
+      user: { id: userId, name: userName },
+      tokenProvider,
+    });
+
+    // setState inside a closure (not directly in the effect body)
+    Promise.resolve().then(() => {
+      if (active) setVideoClient(client);
+    });
+
+    return () => {
+      active = false;
+      client.disconnectUser().catch(() => {});
+      setVideoClient(null);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, isLoaded]);
+
+  if (!videoClient) {
+    return <>{children}</>;
+  }
+
+  return <StreamVideo client={videoClient}>{children}</StreamVideo>;
+}
+
+// ─── Root layout ─────────────────────────────────────────────────────────────
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -43,8 +102,10 @@ export default function RootLayout() {
       options={postHogHost ? { host: postHogHost } : undefined}
     >
       <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <StatusBar style="dark" />
-        <Stack screenOptions={{ headerShown: false }} />
+        <StreamVideoWrapper>
+          <StatusBar style="dark" />
+          <Stack screenOptions={{ headerShown: false }} />
+        </StreamVideoWrapper>
       </ClerkProvider>
     </PostHogProvider>
   );
