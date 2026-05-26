@@ -437,4 +437,220 @@
     font-family: var(--font-poppins);
     color: var(--color-text-secondary);
   }
+
+  /* ============================================================
+     DAILY GOAL CARD  (BEM-style)
+     ============================================================ */
+
+  .daily-goal {
+    background-color: #FFF8EE;
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .daily-goal__label {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: #92400E;
+  }
+
+  .daily-goal__xp {
+    font-size: 26px;
+    font-weight: 700;
+    font-family: var(--font-poppins);
+    color: var(--color-text-primary);
+  }
+
+  .daily-goal__xp-total {
+    font-size: var(--font-size-body-md);
+    font-weight: 400;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+  }
+
+  .daily-goal__image {
+    width: 72px;
+    height: 72px;
+  }
+
+  /* ============================================================
+     CONTINUE BANNER  (BEM-style)
+     ============================================================ */
+
+  .continue-banner {
+    background-color: var(--color-lingua-purple);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    flex-direction: row;
+    align-items: flex-end;
+    overflow: hidden;
+    min-height: 160px;
+  }
+
+  .continue-banner__label {
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .continue-banner__language {
+    font-size: var(--font-size-h3);
+    font-weight: 700;
+    font-family: var(--font-poppins);
+    color: #FFFFFF;
+  }
+
+  .continue-banner__level {
+    font-size: var(--font-size-body-sm);
+    font-weight: 400;
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 14px;
+  }
+
+  .continue-banner__btn {
+    background-color: #FFFFFF;
+    border-radius: var(--radius-full);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 24px;
+    padding-right: 24px;
+    align-self: flex-start;
+  }
+
+  .continue-banner__btn-label {
+    font-size: var(--font-size-body-md);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: var(--color-lingua-purple);
+  }
+
+  .continue-banner__image {
+    width: 110px;
+    height: 130px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+  }
+
+  /* ============================================================
+     PLAN CARD  (BEM-style)
+     ============================================================ */
+
+  .plan-card {
+    background-color: var(--color-background);
+    border-radius: var(--radius-lg);
+    padding-left: 16px;
+    padding-right: 16px;
+    border-width: 1px;
+    border-color: var(--color-border);
+  }
+
+  .plan-card__row {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .plan-card__icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .plan-card__icon-wrap--lesson {
+    background-color: #EEF2FF;
+  }
+
+  .plan-card__icon-wrap--ai {
+    background-color: #EEF2FF;
+  }
+
+  .plan-card__icon-wrap--words {
+    background-color: #FEE2E2;
+  }
+
+  .plan-card__check {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-success);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .plan-card__circle {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-full);
+    border-width: 2px;
+    border-color: #D1D5DB;
+  }
+
+  /* ============================================================
+     NEXT UP CARD  (BEM-style)
+     ============================================================ */
+
+  .next-up__section-label {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .next-up__card {
+    background-color: #ECFDF5;
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .next-up__title {
+    font-size: 17px;
+    font-weight: 700;
+    font-family: var(--font-poppins);
+    color: var(--color-text-primary);
+  }
+
+  .next-up__subtitle {
+    font-size: var(--font-size-body-sm);
+    font-family: var(--font-poppins);
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  .next-up__avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    background-color: #D1FAE5;
+  }
+
+  .next-up__avatar-img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .next-up__video-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-success);
+    align-items: center;
+    justify-content: center;
+  }
 }
