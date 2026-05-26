@@ -452,8 +452,8 @@ Ask if unsure.
 Run:
 
 ```bash
-npm run lint
-npm run typecheck
+bun run lint
+bun run typecheck
 ```
 
 Fix errors.
