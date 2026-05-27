@@ -53,6 +53,12 @@ export function useStreamCall(lesson: Lesson | null): UseStreamCallResult {
     try {
       const c = callRef.current;
       if (c) {
+        try {
+          await c.stopClosedCaptions();
+          LOG("endCall: closed captions stopped");
+        } catch {
+          // Non-fatal — proceed with leaving.
+        }
         await c.leave();
         LOG("endCall: call left");
       }
@@ -192,6 +198,15 @@ export function useStreamCall(lesson: Lesson | null): UseStreamCallResult {
       setCall(newCall);
       setCallStatus("joined");
       LOG("startCall: fully joined and publishing");
+
+      // Start closed captions so live transcript is available immediately.
+      try {
+        await newCall.startClosedCaptions();
+        LOG("startCall: closed captions started");
+      } catch (captionErr) {
+        // Non-fatal — call still works without captions.
+        LOG("startCall: closed captions start failed (non-fatal)", captionErr);
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Failed to connect";
       setErrorMessage(msg);

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@clerk/expo";
 import { getLesson } from "@/data/lessons";
@@ -18,6 +18,7 @@ import { images } from "@/constants/images";
 import { StreamCall } from "@stream-io/video-react-native-sdk";
 import { useStreamCall } from "@/hooks/useStreamCall";
 import { useAgentSession } from "@/hooks/useAgentSession";
+import { useLiveCaptions } from "@/hooks/useLiveCaptions";
 import type { CallStatus } from "@/hooks/useStreamCall";
 import type { AgentStatus } from "@/hooks/useAgentSession";
 
@@ -77,6 +78,27 @@ function agentStatusColor(status: AgentStatus): string {
   }
 }
 
+// ─── Inner component rendered inside StreamCall context ───────────────────────
+
+function CaptionsStrip() {
+  const { captions } = useLiveCaptions();
+  if (captions.length === 0) return null;
+  return (
+    <View className="audio-lesson__captions">
+      {captions.map((c) => (
+        <View key={c.id} className="audio-lesson__caption-row">
+          <Text
+            className={`audio-lesson__caption-speaker audio-lesson__caption-speaker--${c.isAI ? "ai" : "user"}`}
+          >
+            {c.speakerName}:
+          </Text>
+          <Text className="audio-lesson__caption-text">{c.text}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export default function AudioLessonScreen() {
@@ -86,6 +108,8 @@ export default function AudioLessonScreen() {
 
   const lesson = id ? getLesson(id) : null;
   const language = lesson ? getLanguage(lesson.languageCode) : null;
+
+  const [showCaptions, setShowCaptions] = useState(true);
 
   const {
     call,
@@ -325,6 +349,9 @@ export default function AudioLessonScreen() {
         </TouchableOpacity>
       )}
 
+      {/* ── Live captions strip ── */}
+      {isInCall && showCaptions && <CaptionsStrip />}
+
       {/* ── Controls (visible while in call or connecting) ── */}
       {(isInCall || isConnecting) && (
         <View className="audio-lesson__controls">
@@ -349,13 +376,20 @@ export default function AudioLessonScreen() {
             </Text>
           </TouchableOpacity>
 
-          {/* Subtitles (UI only) */}
+          {/* Subtitles toggle */}
           <TouchableOpacity
             className="audio-lesson__ctrl-btn"
             activeOpacity={0.8}
+            onPress={() => setShowCaptions((v) => !v)}
           >
-            <View className="audio-lesson__ctrl-icon">
-              <Ionicons name="text" size={22} color="#6C4EF5" />
+            <View
+              className={`audio-lesson__ctrl-icon${showCaptions ? " audio-lesson__ctrl-icon--captions-active" : ""}`}
+            >
+              <Ionicons
+                name="text"
+                size={22}
+                color={showCaptions ? "#A78BFF" : "#fff"}
+              />
             </View>
             <Text className="audio-lesson__ctrl-label">Subtitles</Text>
           </TouchableOpacity>

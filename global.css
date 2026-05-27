@@ -1209,6 +1209,64 @@
     color: #FF4D4F;
   }
 
+  /* ============================================================
+     AUDIO LESSON — LIVE CAPTIONS  (BEM-style)
+     ============================================================ */
+
+  /* Container strip that sits above the controls */
+  .audio-lesson__captions {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 8px;
+    border-radius: var(--radius-lg);
+    background-color: rgba(0, 0, 0, 0.65);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    gap: 6px;
+  }
+
+  /* Single caption row */
+  .audio-lesson__caption-row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  /* Speaker name chip */
+  .audio-lesson__caption-speaker {
+    font-size: var(--font-size-caption);
+    font-weight: 700;
+    font-family: var(--font-poppins);
+    flex-shrink: 0;
+  }
+
+  .audio-lesson__caption-speaker--ai {
+    color: #A78BFF;
+  }
+
+  .audio-lesson__caption-speaker--user {
+    color: #67D7A0;
+  }
+
+  /* Caption text */
+  .audio-lesson__caption-text {
+    flex: 1;
+    font-size: var(--font-size-body-sm);
+    font-family: var(--font-poppins);
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 18px;
+  }
+
+  /* "CC" active indicator dot in the Subtitles control button */
+  .audio-lesson__ctrl-icon--captions-active {
+    background-color: rgba(167, 139, 255, 0.25);
+    border-width: 1.5px;
+    border-color: #A78BFF;
+  }
+
   /* Practice empty state */
   .practice-empty {
     flex: 1;
