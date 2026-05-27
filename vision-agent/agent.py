@@ -2,14 +2,12 @@
 Dulaingo AI Language Teacher — Vision Agent service.
 
 Transport : Stream Edge (WebRTC audio room)
-LLM       : OpenAI Realtime (speech-to-speech, ~100 ms latency)
+LLM       : Gemini Live (speech-to-speech, ~100 ms latency)
 Mode      : HTTP server via Runner + AgentLauncher
 
 Run in dev   :  uv run agent.py run --call-id <call-id>
 Run as server:  uv run agent.py serve --host 0.0.0.0 --port 8000
 """
-
-import json
 
 from dotenv import load_dotenv
 
@@ -17,10 +15,17 @@ load_dotenv(".env")
 load_dotenv("../.env")
 
 from vision_agents.core import Agent, AgentLauncher, Runner, User
-from vision_agents.plugins import getstream, openai
+from vision_agents.core.agents.agents import Instructions
+from vision_agents.core.edge.events import (
+    ParticipantJoinedEvent,
+    ParticipantLeftEvent,
+    TrackAddedEvent,
+    TrackRemovedEvent,
+)
+from vision_agents.plugins import getstream, gemini
 
 
-def _build_instructions(custom: dict) -> str:
+def _build_instructions(custom: dict) -> Instructions:
     """Build a session-specific system prompt from Stream call custom data."""
     language_code: str = custom.get("languageCode", "")
     ai_teacher_prompt: dict | None = custom.get("aiTeacherPrompt")
@@ -81,7 +86,7 @@ def _build_instructions(custom: dict) -> str:
         ]
         parts.append(f"\n\n## Phrases for this lesson\n" + "\n".join(phrase_lines))
 
-    return base + "".join(parts)
+    return Instructions(input_text=base + "".join(parts))
 
 
 async def create_agent(**kwargs) -> Agent:
@@ -94,7 +99,7 @@ async def create_agent(**kwargs) -> Agent:
         edge=getstream.Edge(),
         agent_user=User(name="Luna", id="luna-teacher"),
         instructions="@instructions.md",
-        llm=openai.Realtime(model="gpt-4o-realtime-preview"),
+        llm=gemini.Realtime(model="gemini-3.1-flash-live-preview"),
     )
 
 
@@ -109,7 +114,7 @@ async def join_call(agent: Agent, call_type: str, call_id: str, **kwargs) -> Non
     # Fetch call details to read lesson custom data
     try:
         call_response = await call.get()
-        custom: dict = call_response.call.custom or {}
+        custom: dict = call_response.data.call.custom or {}
     except Exception as e:
         print(f"[agent] Could not fetch call custom data: {e}")
         custom = {}
@@ -117,8 +122,31 @@ async def join_call(agent: Agent, call_type: str, call_id: str, **kwargs) -> Non
     # Rebuild instructions now that we have the call's custom data
     agent.instructions = _build_instructions(custom)
 
-    # Join with admin capabilities so the agent can publish audio in audio_room
-    async with agent.join(call, participant_wait_timeout=30.0):
+    # Log SFU events so we can see if/when the client joins from the agent's
+    # perspective. EventManager requires type hints to register handlers.
+    @agent.events.subscribe
+    async def _on_participant_joined(event: ParticipantJoinedEvent):
+        p = event.participant
+        print(f"[agent event] ParticipantJoined: user={p.user_id} session={p.session_id}")
+
+    @agent.events.subscribe
+    async def _on_participant_left(event: ParticipantLeftEvent):
+        p = event.participant
+        print(f"[agent event] ParticipantLeft: user={p.user_id}")
+
+    @agent.events.subscribe
+    async def _on_track_added(event: TrackAddedEvent):
+        print(f"[agent event] TrackAdded: {event!r}"[:300])
+
+    @agent.events.subscribe
+    async def _on_track_removed(event: TrackRemovedEvent):
+        print(f"[agent event] TrackRemoved: {event!r}"[:300])
+
+
+    # Join with admin capabilities so the agent can publish audio in audio_room.
+    # participant_wait_timeout=0 means the agent doesn't block waiting for the
+    # client to "appear" — the client joins first, then triggers this session.
+    async with agent.join(call, participant_wait_timeout=0):
         # Go live so the audio_room allows the agent to publish
         try:
             await call.go_live()
@@ -134,14 +162,18 @@ async def join_call(agent: Agent, call_type: str, call_id: str, **kwargs) -> Non
         )
 
         if intro:
-            opening = f'Start the lesson with your opening line: "{intro}"'
+            opening = (
+                f"Say exactly this as your opening line, naturally and warmly, "
+                f"then pause and wait for the student to respond: \"{intro}\""
+            )
         else:
             language_name = {
                 "es": "Spanish", "fr": "French", "ja": "Japanese", "de": "German",
             }.get(custom.get("languageCode", ""), "the target language")
             opening = (
-                f"Greet the student warmly in one short sentence and let them know "
-                f"you're here to help them practise {language_name} today."
+                f"Greet the student warmly in one short, friendly sentence — "
+                f"tell them you're their {language_name} teacher today and you're excited to get started. "
+                f"Then ask them if they're ready to dive in."
             )
 
         await agent.simple_response(opening)

@@ -37,24 +37,32 @@ export function useAgentSession(): UseAgentSessionResult {
   }, []);
 
   const startAgent = useCallback(async (callId: string) => {
+    console.log("[useAgentSession] startAgent: invoked for", callId);
     setAgentStatus("connecting");
     callIdRef.current = callId;
 
     try {
+      console.log("[useAgentSession] POST /api/agent-session");
       const res = await fetch(`${BASE_URL}/api/agent-session`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ callId }),
       });
 
+      console.log("[useAgentSession] response status:", res.status);
+
       if (!res.ok) {
+        const body = await res.text();
+        console.log("[useAgentSession] response body on error:", body);
         throw new Error(`Agent session start failed: ${res.status}`);
       }
 
       const { sessionId } = (await res.json()) as { sessionId: string };
+      console.log("[useAgentSession] connected, sessionId:", sessionId);
       sessionIdRef.current = sessionId;
       setAgentStatus("connected");
     } catch (err) {
+      console.log("[useAgentSession] ERROR:", err);
       console.error("startAgent error", err);
       setAgentStatus("failed");
     }

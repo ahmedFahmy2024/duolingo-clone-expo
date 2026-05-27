@@ -15,6 +15,7 @@ import { useUser } from "@clerk/expo";
 import { getLesson } from "@/data/lessons";
 import { getLanguage } from "@/data/languages";
 import { images } from "@/constants/images";
+import { StreamCall } from "@stream-io/video-react-native-sdk";
 import { useStreamCall } from "@/hooks/useStreamCall";
 import { useAgentSession } from "@/hooks/useAgentSession";
 import type { CallStatus } from "@/hooks/useStreamCall";
@@ -87,6 +88,7 @@ export default function AudioLessonScreen() {
   const language = lesson ? getLanguage(lesson.languageCode) : null;
 
   const {
+    call,
     callId,
     callStatus,
     isMuted,
@@ -150,7 +152,7 @@ export default function AudioLessonScreen() {
     );
   }
 
-  return (
+  const screen = (
     <SafeAreaView style={styles.safeArea}>
       {/* ── Nav bar ── */}
       <View className="audio-lesson__nav">
@@ -408,6 +410,9 @@ export default function AudioLessonScreen() {
       </View>
     </SafeAreaView>
   );
+
+  // Wrap in StreamCall when joined — this is what wires up remote audio playback.
+  return call ? <StreamCall call={call}>{screen}</StreamCall> : screen;
 }
 
 // ─── StyleSheet — only legitimate exceptions per AGENTS.md ───────────────────

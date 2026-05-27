@@ -1,10 +1,10 @@
 [project]
 name = "dulaingo-teacher"
 version = "0.1.0"
-description = "AI language teacher voice agent for Dulaingo — OpenAI Realtime over Stream Edge"
+description = "AI language teacher voice agent for Dulaingo — Gemini Live over Stream Edge"
 requires-python = ">=3.12"
 dependencies = [
-    "vision-agents[getstream,openai]",
+    "vision-agents[gemini,getstream]",
     "python-dotenv",
 ]
 

@@ -35,6 +35,10 @@ function StreamVideoWrapper({ children }: { children: React.ReactNode }) {
       user.primaryEmailAddress?.emailAddress ??
       userId;
 
+    // Token provider used by every call this user joins. The lesson screen
+    // posts the full lesson payload to /api/stream-token before starting the
+    // call so the agent has the lesson context; here we just need a valid
+    // token so the SDK can authenticate the connection up-front.
     const tokenProvider = async (): Promise<string> => {
       const res = await fetch("/api/stream-token", {
         method: "POST",
@@ -46,21 +50,23 @@ function StreamVideoWrapper({ children }: { children: React.ReactNode }) {
     };
 
     let active = true;
+    // Use getOrCreateInstance so the same client is shared with every hook
+    // (StreamVideo provider + useStreamCall must agree on a single client,
+    // otherwise the audio mixer mounts on the wrong instance).
     const client = StreamVideoClient.getOrCreateInstance({
       apiKey: streamApiKey,
       user: { id: userId, name: userName },
       tokenProvider,
     });
 
-    // setState inside a closure (not directly in the effect body)
     Promise.resolve().then(() => {
       if (active) setVideoClient(client);
     });
 
     return () => {
       active = false;
-      client.disconnectUser().catch(() => {});
-      setVideoClient(null);
+      // Don't disconnect here on unmount — the singleton is reused across
+      // route transitions and disconnecting kills in-flight calls.
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id, isLoaded]);
