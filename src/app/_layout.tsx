@@ -1,8 +1,10 @@
 import "../../global.css";
 
-import { ClerkProvider, useUser } from "@clerk/expo";
+import { ClerkProvider, useUser, useAuth } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { Stack } from "expo-router";
+import { useLanguageStore } from "@/store/languageStore";
+import { useProgressStore } from "@/store/progressStore";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
@@ -78,6 +80,36 @@ function StreamVideoWrapper({ children }: { children: React.ReactNode }) {
   return <StreamVideo client={videoClient}>{children}</StreamVideo>;
 }
 
+// ─── AppInitializer component ──────────────────────────────────────────────
+
+function AppInitializer({
+  children,
+  fontsLoaded,
+  fontError,
+}: {
+  children: React.ReactNode;
+  fontsLoaded: boolean;
+  fontError: Error | null;
+}) {
+  const { isLoaded: clerkLoaded } = useAuth();
+  const langHydrated = useLanguageStore((s) => s._hasHydrated);
+  const progHydrated = useProgressStore((s) => s._hasHydrated);
+
+  const isReady = fontsLoaded && clerkLoaded && langHydrated && progHydrated;
+
+  useEffect(() => {
+    if (isReady || fontError) {
+      SplashScreen.hideAsync();
+    }
+  }, [isReady, fontError]);
+
+  if (!isReady && !fontError) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
 // ─── Root layout ─────────────────────────────────────────────────────────────
 
 export default function RootLayout() {
@@ -87,16 +119,6 @@ export default function RootLayout() {
     "Poppins-SemiBold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Bold": require("../../assets/fonts/Poppins-Bold.ttf"),
   });
-
-  useEffect(() => {
-    if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
 
   if (!postHogKey) {
     console.warn("EXPO_PUBLIC_POSTHOG_KEY is not set — PostHog analytics disabled.");
@@ -108,10 +130,12 @@ export default function RootLayout() {
       options={postHogHost ? { host: postHogHost } : undefined}
     >
       <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <StreamVideoWrapper>
-          <StatusBar style="dark" />
-          <Stack screenOptions={{ headerShown: false }} />
-        </StreamVideoWrapper>
+        <AppInitializer fontsLoaded={fontsLoaded} fontError={fontError}>
+          <StreamVideoWrapper>
+            <StatusBar style="dark" />
+            <Stack screenOptions={{ headerShown: false }} />
+          </StreamVideoWrapper>
+        </AppInitializer>
       </ClerkProvider>
     </PostHogProvider>
   );
