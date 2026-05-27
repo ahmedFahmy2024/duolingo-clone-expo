@@ -19,6 +19,11 @@
       "skillPath": "plugins/expo/skills/add-app-clip/SKILL.md",
       "computedHash": "6bbeeae2814231780a4ee1bbd89e6916e35803a78a9a57778dc883cc3113c6fc"
     },
+    "agent": {
+      "source": "visionagents.ai",
+      "sourceType": "well-known",
+      "computedHash": "71fa5fcb73ebd687a8bc6702716703778fcfaa4e0db95475b12bfc4c7f296267"
+    },
     "building-native-ui": {
       "source": "expo/skills",
       "sourceType": "github",

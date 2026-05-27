@@ -5,6 +5,7 @@ import {
   CallingState,
 } from "@stream-io/video-react-native-sdk";
 import { useUser } from "@clerk/expo";
+import type { Lesson } from "@/types/learning";
 
 export type CallStatus =
   | "idle"
@@ -16,6 +17,7 @@ export type CallStatus =
 
 interface UseStreamCallResult {
   call: Call | null;
+  callId: string | null;
   callStatus: CallStatus;
   isMuted: boolean;
   callingState: CallingState;
@@ -28,17 +30,17 @@ interface UseStreamCallResult {
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL ?? "";
 
-export function useStreamCall(lessonId: string, languageCode: string): UseStreamCallResult {
+export function useStreamCall(lesson: Lesson | null): UseStreamCallResult {
   const { user } = useUser();
 
   const [call, setCall] = useState<Call | null>(null);
+  const [callId, setCallId] = useState<string | null>(null);
   const [callStatus, setCallStatus] = useState<CallStatus>("idle");
   const [isMuted, setIsMuted] = useState(false);
   const [callingState, setCallingState] = useState<CallingState>(CallingState.IDLE);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [streamVideoClient, setStreamVideoClient] = useState<StreamVideoClient | null>(null);
 
-  // Keep a ref in sync with state so async callbacks always see the latest call
   const callRef = useRef<Call | null>(null);
   useEffect(() => {
     callRef.current = call;
@@ -75,6 +77,11 @@ export function useStreamCall(lessonId: string, languageCode: string): UseStream
       setCallStatus("error");
       return;
     }
+    if (!lesson) {
+      setErrorMessage("No lesson selected.");
+      setCallStatus("error");
+      return;
+    }
 
     setCallStatus("connecting");
     setErrorMessage(null);
@@ -89,18 +96,29 @@ export function useStreamCall(lessonId: string, languageCode: string): UseStream
       const res = await fetch(`${BASE_URL}/api/stream-token`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, userName, lessonId, languageCode }),
+        body: JSON.stringify({
+          userId,
+          userName,
+          lessonId: lesson.id,
+          languageCode: lesson.languageCode,
+          goals: lesson.goals,
+          vocabulary: lesson.vocabulary ?? [],
+          phrases: lesson.phrases ?? [],
+          aiTeacherPrompt: lesson.aiTeacherPrompt ?? null,
+        }),
       });
 
       if (!res.ok) {
         throw new Error(`Token fetch failed: ${res.status}`);
       }
 
-      const { token, callId, apiKey } = (await res.json()) as {
+      const { token, callId: newCallId, apiKey } = (await res.json()) as {
         token: string;
         callId: string;
         apiKey: string;
       };
+
+      setCallId(newCallId);
 
       const client = StreamVideoClient.getOrCreateInstance({
         apiKey,
@@ -109,7 +127,7 @@ export function useStreamCall(lessonId: string, languageCode: string): UseStream
       });
       setStreamVideoClient(client);
 
-      const newCall = client.call("audio_room", callId);
+      const newCall = client.call("audio_room", newCallId);
 
       newCall.state.callingState$.subscribe((state) => {
         setCallingState(state);
@@ -126,7 +144,7 @@ export function useStreamCall(lessonId: string, languageCode: string): UseStream
       setCallStatus("error");
       console.error("startCall error", err);
     }
-  }, [user, lessonId, languageCode]);
+  }, [user, lesson]);
 
   // cleanup on unmount
   useEffect(() => {
@@ -140,6 +158,7 @@ export function useStreamCall(lessonId: string, languageCode: string): UseStream
 
   return {
     call,
+    callId,
     callStatus,
     isMuted,
     callingState,

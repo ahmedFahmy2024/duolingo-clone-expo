@@ -9,14 +9,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@clerk/expo";
 import { getLesson } from "@/data/lessons";
 import { getLanguage } from "@/data/languages";
 import { images } from "@/constants/images";
 import { useStreamCall } from "@/hooks/useStreamCall";
+import { useAgentSession } from "@/hooks/useAgentSession";
 import type { CallStatus } from "@/hooks/useStreamCall";
+import type { AgentStatus } from "@/hooks/useAgentSession";
 
 // ─── Feedback scores ──────────────────────────────────────────────────────────
 
@@ -32,7 +34,7 @@ const FEEDBACK_SCORES: FeedbackScore[] = [
   { label: "Grammar", value: "Good", variant: "good" },
 ];
 
-// ─── Status indicator ─────────────────────────────────────────────────────────
+// ─── Status helpers ───────────────────────────────────────────────────────────
 
 function statusLabel(status: CallStatus): string {
   switch (status) {
@@ -56,6 +58,24 @@ function statusColor(status: CallStatus): string {
   }
 }
 
+function agentStatusLabel(status: AgentStatus): string {
+  switch (status) {
+    case "connecting": return "AI joining…";
+    case "connected":  return "AI ready";
+    case "failed":     return "AI failed";
+    default:           return "";
+  }
+}
+
+function agentStatusColor(status: AgentStatus): string {
+  switch (status) {
+    case "connecting": return "#4D88FF";
+    case "connected":  return "#21C168";
+    case "failed":     return "#FF4D4F";
+    default:           return "transparent";
+  }
+}
+
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export default function AudioLessonScreen() {
@@ -67,17 +87,27 @@ export default function AudioLessonScreen() {
   const language = lesson ? getLanguage(lesson.languageCode) : null;
 
   const {
+    callId,
     callStatus,
     isMuted,
     errorMessage,
     startCall,
     endCall,
     toggleMute,
-  } = useStreamCall(lesson?.id ?? "", lesson?.languageCode ?? "");
+  } = useStreamCall(lesson);
+
+  const { agentStatus, startAgent, stopAgent } = useAgentSession();
 
   const isInCall = callStatus === "joined" || callStatus === "muted";
   const isConnecting = callStatus === "connecting";
   const isEnded = callStatus === "ended";
+
+  // Once the user has joined the call, start the agent
+  useEffect(() => {
+    if (callStatus === "joined" && callId) {
+      startAgent(callId);
+    }
+  }, [callStatus, callId, startAgent]);
 
   // Resolve teacher phrase from lesson data
   const teacherPhrase: { text: string; translation: string } = (() => {
@@ -100,9 +130,10 @@ export default function AudioLessonScreen() {
   const handleBack = useCallback(() => router.back(), [router]);
 
   const handleEndCall = useCallback(async () => {
+    await stopAgent();
     await endCall();
     router.back();
-  }, [endCall, router]);
+  }, [stopAgent, endCall, router]);
 
   const userName =
     user?.fullName ??
@@ -162,6 +193,22 @@ export default function AudioLessonScreen() {
           </View>
         </View>
       </View>
+
+      {/* ── Agent status badge (shown while call is active) ── */}
+      {agentStatus !== "idle" && (
+        <View className="flex-row items-center justify-center gap-2 py-1">
+          {agentStatus === "connecting" ? (
+            <ActivityIndicator size="small" color="#4D88FF" />
+          ) : (
+            <View
+              style={[styles.agentDot, { backgroundColor: agentStatusColor(agentStatus) }]}
+            />
+          )}
+          <Text style={[styles.agentStatusText, { color: agentStatusColor(agentStatus) }]}>
+            {agentStatusLabel(agentStatus)}
+          </Text>
+        </View>
+      )}
 
       {/* ── Teacher area ── */}
       <View className="audio-lesson__teacher-area">
@@ -227,6 +274,16 @@ export default function AudioLessonScreen() {
           <Ionicons name="alert-circle" size={16} color="#FF4D4F" />
           <Text className="audio-lesson__error-text" numberOfLines={2}>
             {errorMessage}
+          </Text>
+        </View>
+      )}
+
+      {/* ── Agent failed banner ── */}
+      {agentStatus === "failed" && (
+        <View className="audio-lesson__error-banner">
+          <Ionicons name="alert-circle" size={16} color="#FF4D4F" />
+          <Text className="audio-lesson__error-text" numberOfLines={2}>
+            AI teacher couldn&apos;t connect. You can still practise on your own.
           </Text>
         </View>
       )}
@@ -388,7 +445,6 @@ const styles = StyleSheet.create({
   flagText: {
     fontSize: 16,
   },
-  // PiP avatar circle
   pipAvatar: {
     width: 40,
     height: 40,
@@ -397,7 +453,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  // Muted badge over PiP
   mutedBadge: {
     position: "absolute",
     bottom: 4,
@@ -408,5 +463,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF4D4F",
     alignItems: "center",
     justifyContent: "center",
+  },
+  agentDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  agentStatusText: {
+    fontSize: 12,
+    fontFamily: "Poppins-Medium",
   },
 });
